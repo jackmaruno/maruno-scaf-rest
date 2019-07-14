@@ -7,6 +7,8 @@
  */
 package br.com.maruno.scaf.resource;
 
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,18 @@ public class ParametrosResource extends ResourceSupport{
 	CacheControl cacheControl = CacheControl.maxAge(5L, TimeUnit.MINUTES); 
 	
 
+	@GetMapping("/test")
+	@ResponseBody
+	public ResponseEntity<?> test() {
+		Map<String, Object> map = new TreeMap<String, Object>();
+		map.put("data", new java.util.Date());
+		map.put("inteiro", 1);
+		map.put("longo", 1L);
+		map.put("decimal", 1.12D);
+		map.put("data_string", new java.util.Date().toGMTString());
+		return ok(cacheControl, parametrosService.findGrupos());
+	}
+	
 	@GetMapping("/grupos")
 	@ResponseBody
 	public ResponseEntity<?> findGrupos() {  
