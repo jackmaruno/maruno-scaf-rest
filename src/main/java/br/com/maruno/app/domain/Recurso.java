@@ -37,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @NomeCompleto br.com.maruno.app.domain.Recurso.java
  */
 @Entity
-@Table(name = "TB_RECURSO", schema = Domain.SCHEMA)
+@Table(name = "TB_RECURSO")//, schema = Domain.SCHEMA)
 public class Recurso  extends Domain {
 	private static final long serialVersionUID = 1L;
 	

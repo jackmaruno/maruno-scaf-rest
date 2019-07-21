@@ -34,7 +34,7 @@ import br.com.maruno.app.domain.Domain;
  * @NomeCompleto br.com.maruno.scaf.domain.vw.VWProximaAtividade.java
  */
 @Entity
-@Table(name = "VW_PROXIMAS_ATIVIDADES", schema = Domain.SCHEMA)
+@Table(name = "VW_PROXIMAS_ATIVIDADES")//, schema = Domain.SCHEMA)
 public class VWProximaAtividade implements Serializable {
 	private static final long serialVersionUID = 1L;
 

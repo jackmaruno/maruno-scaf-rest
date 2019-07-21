@@ -38,7 +38,7 @@ import br.com.maruno.app.domain.Domain;
  * @NomeCompleto br.com.maruno.scaf.domain.Agendamento.java
  */
 @Entity
-@Table(name = "TB_AGENDAMENTO", schema = Domain.SCHEMA)
+@Table(name = "TB_AGENDAMENTO")//, schema = Domain.SCHEMA)
 public class Agendamento extends Domain {
 	private static final long serialVersionUID = 1L;
 	

@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @NomeCompleto br.com.maruno.app.domain.Perfil.java
  */
 @Entity
-@Table(name = "TB_PERFIL", schema = Domain.SCHEMA)
+@Table(name = "TB_PERFIL")//, schema = Domain.SCHEMA)
 public class Perfil  extends Domain {
 	private static final long serialVersionUID = 1L;
 	

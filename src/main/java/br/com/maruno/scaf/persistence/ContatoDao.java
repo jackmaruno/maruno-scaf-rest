@@ -36,6 +36,6 @@ public interface ContatoDao extends JpaRepository<Contato, Integer> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE "+Domain.SCHEMA+".TB_CONTATO SET IND_EXCLUIDO = 1 WHERE COD_CONTATO = :codigo ", nativeQuery = true)
+	@Query(value = "UPDATE TB_CONTATO SET IND_EXCLUIDO = 1 WHERE COD_CONTATO = :codigo ", nativeQuery = true)
 	int remove(@Param("codigo") Integer codigo);
 }

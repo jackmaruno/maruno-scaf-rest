@@ -34,7 +34,7 @@ import br.com.maruno.app.domain.Domain;
  * @NomeCompleto br.com.maruno.scaf.domain.vw.VWAgenda.java
  */
 @Entity
-@Table(name = "VW_AGENDA_ATUAL", schema = Domain.SCHEMA)
+@Table(name = "VW_AGENDA_ATUAL")//, schema = Domain.SCHEMA)
 public class VWAgenda implements Serializable {
 	private static final long serialVersionUID = 1L;
  

@@ -53,7 +53,7 @@ public interface LancamentoDao extends JpaRepository<Lancamento, Integer> {
 			                        , @Param("codCategoria")  Integer codCategoria
 			                        , @Param("descricao")     String  descricao );
 
-	@Query(value = " SELECT * FROM "+Domain.SCHEMA+".TB_LANCAMENTO WHERE COD_LANCAMENTO = :codLancamento", nativeQuery = true )
+	@Query(value = " SELECT * FROM TB_LANCAMENTO WHERE COD_LANCAMENTO = :codLancamento", nativeQuery = true )
 	Lancamento findByCodigo(@Param("codLancamento") Integer codLancamento);
 	
 	@Query(" SELECT l FROM Lancamento l "
@@ -62,15 +62,15 @@ public interface LancamentoDao extends JpaRepository<Lancamento, Integer> {
 	Lancamento findByParcela(@Param("codParcela") Integer codParcela);
 	
 	
-	@Query(value = " SELECT DISTINCT L.* FROM "+Domain.SCHEMA+".RL_LANCAMENTO_PARCELA RL "
-				 + " INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO L ON L.COD_LANCAMENTO = RL.COD_LANCAMENTO"
+	@Query(value = " SELECT DISTINCT L.* FROM RL_LANCAMENTO_PARCELA RL "
+				 + " INNER JOIN TB_LANCAMENTO L ON L.COD_LANCAMENTO = RL.COD_LANCAMENTO"
 				 + " WHERE RL.COD_PARCELA = :codParcela", nativeQuery = true )
 	Lancamento findByParcelaFatura(@Param("codParcela") Integer codParcela);
 	
 
 	@Modifying
 	@Transactional
-	@Query(value = " UPDATE "+Domain.SCHEMA+".TB_LANCAMENTO "
+	@Query(value = " UPDATE TB_LANCAMENTO "
 				 + " SET VAL_LANCAMENTO = VAL_LANCAMENTO + :valor"
 				 + " WHERE COD_LANCAMENTO = :codLancamento", nativeQuery = true )
 	int updateValorRealizado(@Param("codLancamento") Integer codLancamento, @Param("valor") BigDecimal valor);
@@ -78,7 +78,7 @@ public interface LancamentoDao extends JpaRepository<Lancamento, Integer> {
 	
 	@Modifying
 	@Transactional
-	@Query(value = " UPDATE "+Domain.SCHEMA+".TB_LANCAMENTO"
+	@Query(value = " UPDATE TB_LANCAMENTO"
 			     + " SET IND_EXCLUIDO   = 1"
 			     + "   , DAT_ALTERACAO  = NOW()"
 			     + " WHERE COD_USUARIO  = :codUsuario"
@@ -89,7 +89,7 @@ public interface LancamentoDao extends JpaRepository<Lancamento, Integer> {
 
     @Query(nativeQuery = true, 
 		    value = " SELECT * " + 
-		    		" FROM "+Domain.SCHEMA+".TB_LANCAMENTO " + 
+		    		" FROM TB_LANCAMENTO " + 
 		    		" WHERE COD_CATEGORIA    = 48" +  
 		    		" AND IND_EXCLUIDO       = 0" +
 		    		" AND COD_USUARIO        = :codUsuario "+
@@ -100,7 +100,7 @@ public interface LancamentoDao extends JpaRepository<Lancamento, Integer> {
     
     @Query(nativeQuery = true, 
     		value = " SELECT DAT_FATURA, DAT_REFERENCIA, VAL_LANCAMENTO " + 
-    				" FROM "+Domain.SCHEMA+".VW_FATURAS_DATAS " + 
+    				" FROM VW_FATURAS_DATAS " + 
     				" WHERE COD_USUARIO        = :codUsuario "+
     		        " AND   COD_CARTAO_CREDITO = :codCartaoCredito")	
     List<Object[]> findDatasFaturas(@Param("codUsuario") Integer codUsuario, @Param("codCartaoCredito") Integer codCartaoCredito); 

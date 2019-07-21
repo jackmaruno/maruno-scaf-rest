@@ -34,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @Entity
 @Immutable
-@Table(name = "VW_PERMISSAO_RECURSO", schema = Domain.SCHEMA)
+@Table(name = "VW_PERMISSAO_RECURSO")//, schema = Domain.SCHEMA)
 public class PermissaoRecurso  extends Domain {
 	private static final long serialVersionUID = 1L;
 	
@@ -47,8 +47,8 @@ public class PermissaoRecurso  extends Domain {
 	private String metodo;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(schema = Domain.SCHEMA
-			 , name = "VW_PERMISSAO_RECURSO_PERFIL"
+	@JoinTable(//schema = Domain.SCHEMA
+			  name = "VW_PERMISSAO_RECURSO_PERFIL"
 	         , joinColumns = {@JoinColumn(name = "COD_PERMISSAO") }
 	         , inverseJoinColumns = {@JoinColumn(name = "COD_PERFIL") })
 	private List<Perfil> listPerfis = new ArrayList<Perfil>();

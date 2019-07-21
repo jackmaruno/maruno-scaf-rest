@@ -37,7 +37,7 @@ import br.com.maruno.app.domain.Domain;
  * @NomeCompleto br.com.maruno.scaf.domain.Tag.java
  */
 @Entity
-@Table(name = "TB_TAG", schema = Domain.SCHEMA)
+@Table(name = "TB_TAG")//, schema = Domain.SCHEMA)
 public class Tag extends Domain {
 	private static final long serialVersionUID = 1L;
 	

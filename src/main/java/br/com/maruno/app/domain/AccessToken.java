@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @NomeCompleto br.com.maruno.app.domain.AccessToken.java
  */
 @Entity
-@Table(name = "TB_ACCES_TOKEN", schema = Domain.SCHEMA)
+@Table(name = "TB_ACCES_TOKEN")//, schema = Domain.SCHEMA)
 public class AccessToken  extends Domain {
 	private static final long serialVersionUID = 1L;
 	

@@ -34,7 +34,7 @@ public interface DashBoardDao extends JpaRepository<Lancamento, Integer> {
     		"        NUM_DIAS, "+
     		"        NUM_HORAS, "+
     		"        NUM_MINUTOS "+
-			" from "+Domain.SCHEMA+".VW_ULTIMAS_ATIVIDADES "+ 
+			" from VW_ULTIMAS_ATIVIDADES "+ 
 			" where ANO_MES = :competencia "+ 
 		    " and COD_USUARIO = :codUsuario ")	
     List<Object[]> findUltimasAtividades(@Param("codUsuario") Integer codUsuario, @Param("competencia") String competencia);
@@ -52,13 +52,13 @@ public interface DashBoardDao extends JpaRepository<Lancamento, Integer> {
 			"      , LANCAMENTO_PAGAMENTO.VAL_LANCAMENTO AS VAL_PAGO " + 
 			"      , timestampdiff(DAY,now(),PARCELA.DAT_PARCELA) AS DIAS " + 
 			"\n" + 
-			" FROM "+Domain.SCHEMA+".TB_PARCELA PARCELA\n" + 
+			" FROM TB_PARCELA PARCELA\n" + 
 			"\n" + 
-			"	INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO LANCAMENTO ON LANCAMENTO.COD_LANCAMENTO = PARCELA.COD_LANCAMENTO\n" + 
+			"	INNER JOIN TB_LANCAMENTO LANCAMENTO ON LANCAMENTO.COD_LANCAMENTO = PARCELA.COD_LANCAMENTO\n" + 
 			"\n" + 
-			"	INNER JOIN "+Domain.SCHEMA+".TB_CATEGORIA CATEGORIA ON CATEGORIA.COD_CATEGORIA = LANCAMENTO.COD_CATEGORIA\n" + 
+			"	INNER JOIN TB_CATEGORIA CATEGORIA ON CATEGORIA.COD_CATEGORIA = LANCAMENTO.COD_CATEGORIA\n" + 
 			"\n" + 
-			"	INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO LANCAMENTO_PAGAMENTO ON LANCAMENTO_PAGAMENTO.COD_PARCELA = PARCELA.COD_PARCELA\n" + 
+			"	INNER JOIN TB_LANCAMENTO LANCAMENTO_PAGAMENTO ON LANCAMENTO_PAGAMENTO.COD_PARCELA = PARCELA.COD_PARCELA\n" + 
 			"\n" + 
 			"\n WHERE LANCAMENTO.COD_USUARIO = :codUsuario \n" + 
 			"\n AND LANCAMENTO.COD_CARTAO_CREDITO IS NULL\n" + 
@@ -80,9 +80,9 @@ public interface DashBoardDao extends JpaRepository<Lancamento, Integer> {
 			"      , FATURAS.VAL_LANCAMENTO AS VAL_PAGO\n" + 
 			"      , timestampdiff(DAY,now(),FATURAS.DAT_FATURA) AS DIAS \n" + 
 			"\n" + 
-			" FROM "+Domain.SCHEMA+".VW_FATURAS_PREVISTAS_REALIZADAS FATURAS\n" + 
+			" FROM VW_FATURAS_PREVISTAS_REALIZADAS FATURAS\n" + 
 			"\n" + 
-			"	INNER JOIN "+Domain.SCHEMA+".TB_CATEGORIA CATEGORIA ON CATEGORIA.COD_CATEGORIA = 48\n" + 
+			"	INNER JOIN TB_CATEGORIA CATEGORIA ON CATEGORIA.COD_CATEGORIA = 48\n" + 
 			"\n" + 
 			" WHERE FATURAS.COD_USUARIO = :codUsuario  \n" + 
 			" AND FATURAS.DAT_REFERENCIA IS NULL \n" + 

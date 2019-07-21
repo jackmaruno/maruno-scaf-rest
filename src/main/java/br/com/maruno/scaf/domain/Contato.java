@@ -35,7 +35,7 @@ import br.com.maruno.app.domain.Domain;
  * @NomeCompleto br.com.maruno.scaf.domain.Contato.java
  */
 @Entity
-@Table(name = "TB_CONTATO", schema = Domain.SCHEMA)
+@Table(name = "TB_CONTATO")//, schema = Domain.SCHEMA)
 public class Contato extends Domain {
 	private static final long serialVersionUID = 1L;
 	

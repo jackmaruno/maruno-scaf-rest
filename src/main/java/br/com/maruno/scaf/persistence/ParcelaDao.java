@@ -31,19 +31,19 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 
 	List<Parcela> findByCodLancamento(Integer codLancamento);
 
-//	@Query(value = " SELECT * FROM "+Domain.SCHEMA+".TB_PARCELA WHERE COD_PARCELA = :codParcela", nativeQuery = true )
+//	@Query(value = " SELECT * FROM TB_PARCELA WHERE COD_PARCELA = :codParcela", nativeQuery = true )
 //	Parcela findByCodigo(@Param("codParcela") Integer codParcela);
 
-	@Query(value = " SELECT p.* FROM "+Domain.SCHEMA+".TB_PARCELA p"
-		         + " INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
+	@Query(value = " SELECT p.* FROM TB_PARCELA p"
+		         + " INNER JOIN TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
 		         + " WHERE l.IND_EXCLUIDO = 0"
 		         + " AND l.COD_USUARIO = :codUsuario"
 				 + " AND p.COD_PARCELA = :codParcela"  , nativeQuery = true)	
 	Parcela findParcelaById(@Param("codUsuario") Integer codUsuario, @Param("codParcela") Integer codParcela);
 
-	@Query(value = " SELECT p.* FROM "+Domain.SCHEMA+".TB_PARCELA p"
-		         + " INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
-		         + " LEFT JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l2 ON l2.COD_PARCELA = p.COD_PARCELA"
+	@Query(value = " SELECT p.* FROM TB_PARCELA p"
+		         + " INNER JOIN TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
+		         + " LEFT JOIN TB_LANCAMENTO l2 ON l2.COD_PARCELA = p.COD_PARCELA"
 		         + " WHERE l2.COD_LANCAMENTO IS NULL "
 		         + " AND l.IND_EXCLUIDO = 0"
 		         + " AND l.COD_USUARIO = :codUsuario"
@@ -52,9 +52,9 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 				 + " ORDER BY p.DAT_PARCELA, l.DAT_LANCAMENTO", nativeQuery = true)	
 	List<Parcela> findParcelasPendentes(@Param("codUsuario") Integer codUsuario, @Param("anoMes") String anoMes);
 	
-	@Query(value = " SELECT p.* FROM "+Domain.SCHEMA+".TB_PARCELA p"
-			+ " INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
-			+ " LEFT JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l2 ON l2.COD_PARCELA = p.COD_PARCELA"
+	@Query(value = " SELECT p.* FROM TB_PARCELA p"
+			+ " INNER JOIN TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
+			+ " LEFT JOIN TB_LANCAMENTO l2 ON l2.COD_PARCELA = p.COD_PARCELA"
 			+ " WHERE l2.COD_LANCAMENTO IS NOT NULL "
 	        + " AND l.IND_EXCLUIDO = 0"
 			+ " AND l.COD_USUARIO = :codUsuario"
@@ -64,9 +64,9 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 	List<Parcela> findParcelasPagas(@Param("codUsuario") Integer codUsuario, @Param("anoMes") String anoMes);
 	
 	@Query(value = " SELECT DISTINCT TO_CHAR(p.DAT_PARCELA,'YYYYMM') AS ANO_MES, TO_CHAR(p.DAT_PARCELA,'MM/YYYY') AS DATA "
-			+ " FROM "+Domain.SCHEMA+".TB_PARCELA p"
-			+ " INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
-			+ " LEFT JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l2 ON l2.COD_PARCELA = p.COD_PARCELA"
+			+ " FROM TB_PARCELA p"
+			+ " INNER JOIN TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
+			+ " LEFT JOIN TB_LANCAMENTO l2 ON l2.COD_PARCELA = p.COD_PARCELA"
 			+ " WHERE l2.COD_LANCAMENTO IS NULL "
 	        + " AND l.IND_EXCLUIDO = 0"
 			+ " AND l.COD_USUARIO = :codUsuario"
@@ -74,8 +74,8 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 			+ " ORDER BY 1" , nativeQuery = true)	
 	List<Object[]> findDatasParcelasPendentes(@Param("codUsuario") Integer codUsuario);
 	
-	@Query(value = " SELECT p.* FROM "+Domain.SCHEMA+".TB_PARCELA p"
-			+ " INNER JOIN "+Domain.SCHEMA+".TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
+	@Query(value = " SELECT p.* FROM TB_PARCELA p"
+			+ " INNER JOIN TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
 	        + " WHERE l.IND_EXCLUIDO                      = 0"
 	        + " AND l.COD_USUARIO                         = :codUsuario"
 			+ " AND l.COD_CARTAO_CREDITO                  = :codCartaoCredito"
@@ -84,15 +84,15 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 	List<Parcela> findByParameters(@Param("codUsuario") Integer codUsuario, @Param("codCartaoCredito") Integer codCartaoCredito, @Param("data") String data);
 	
 	@Query(value = " SELECT p.* "
-			     + " FROM "+Domain.SCHEMA+".TB_PARCELA p"
-				 + " 	INNER JOIN "+Domain.SCHEMA+".RL_LANCAMENTO_PARCELA RL ON RL.COD_PARCELA = p.COD_PARCELA"
+			     + " FROM TB_PARCELA p"
+				 + " 	INNER JOIN RL_LANCAMENTO_PARCELA RL ON RL.COD_PARCELA = p.COD_PARCELA"
 				 + " WHERE RL.COD_LANCAMENTO      = :codLancamento" 
 				 + " ORDER BY p.DAT_PARCELA", nativeQuery = true)	
 	List<Parcela> findByFatura(@Param("codLancamento") Integer codLancamento);
 
 	@Modifying
 	@Transactional
-	@Query(value = "  MERGE INTO "+Domain.SCHEMA+".RL_LANCAMENTO_PARCELA RL ("
+	@Query(value = "  MERGE INTO RL_LANCAMENTO_PARCELA RL ("
 				+ "\n     SELECT :codLancamento  AS COD_LANCAMENTO"
 				+ "\n          , :codParcela     AS COD_PARCELA" 
 				+ "\n     FROM DUAL"
@@ -104,7 +104,7 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 	
 	@Modifying
 	@Transactional
-	@Query(value =  " INSERT INTO "+Domain.SCHEMA+".RL_LANCAMENTO_PARCELA (COD_LANCAMENTO, COD_PARCELA) \r\n" + 
+	@Query(value =  " INSERT INTO RL_LANCAMENTO_PARCELA (COD_LANCAMENTO, COD_PARCELA) \r\n" + 
 			" VALUES (:codLancamento, :codParcela)  \r\n" + 
 			" ON DUPLICATE KEY UPDATE COD_PARCELA = COD_PARCELA" , nativeQuery = true)	
 	int saveLancamentoParcelaMYSQL(@Param("codLancamento") Integer codLancamento, @Param("codParcela") Integer codParcela);

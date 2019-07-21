@@ -40,11 +40,11 @@ public interface AgendamentoDao extends JpaRepository<Agendamento, Integer> {
 	
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE "+Domain.SCHEMA+".TB_AGENDAMENTO SET IND_ATIVO = :ativo, DAT_ALTERACAO = :dataAtualizacao WHERE COD_USUARIO = :codUsuario AND COD_AGENDAMENTO = :codigo ", nativeQuery = true)
+	@Query(value = "UPDATE TB_AGENDAMENTO SET IND_ATIVO = :ativo, DAT_ALTERACAO = :dataAtualizacao WHERE COD_USUARIO = :codUsuario AND COD_AGENDAMENTO = :codigo ", nativeQuery = true)
 	int alterarStatus(@Param("codUsuario") Integer codUsuario, @Param("codigo") Integer codigo, @Param("dataAtualizacao") Date dataAtualizacao, @Param("ativo") boolean ativo);
 	
 	@Modifying
 	@Transactional
-	@Query(value = "UPDATE "+Domain.SCHEMA+".TB_AGENDAMENTO SET IND_EXCLUIDO = 1, IND_ATIVO = 0, DAT_ALTERACAO = :dataAtualizacao WHERE COD_USUARIO = :codUsuario AND COD_AGENDAMENTO = :codigo ", nativeQuery = true)
+	@Query(value = "UPDATE TB_AGENDAMENTO SET IND_EXCLUIDO = 1, IND_ATIVO = 0, DAT_ALTERACAO = :dataAtualizacao WHERE COD_USUARIO = :codUsuario AND COD_AGENDAMENTO = :codigo ", nativeQuery = true)
 	int remove(@Param("codUsuario") Integer codUsuario, @Param("codigo") Integer codigo, @Param("dataAtualizacao") Date dataAtualizacao);
 }

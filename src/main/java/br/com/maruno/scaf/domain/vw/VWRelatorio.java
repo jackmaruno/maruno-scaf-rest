@@ -36,7 +36,7 @@ import br.com.maruno.app.domain.Domain;
  * @NomeCompleto br.com.maruno.scaf.domain.vw.VWRelatorio.java
  */
 @Entity
-@Table(name = "VW_RELATORIO", schema = Domain.SCHEMA)
+@Table(name = "VW_RELATORIO")//, schema = Domain.SCHEMA)
 public class VWRelatorio extends Domain {
 	private static final long serialVersionUID = 1L;
 	

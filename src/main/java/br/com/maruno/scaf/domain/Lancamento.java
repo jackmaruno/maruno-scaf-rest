@@ -45,7 +45,7 @@ import br.com.maruno.scaf.enums.TipoPagamentoEnum;
  * @NomeCompleto br.com.maruno.scaf.domain.Lancamento.java
  */
 @Entity
-@Table(name = "TB_LANCAMENTO", schema = Domain.SCHEMA)
+@Table(name = "TB_LANCAMENTO")//, schema = Domain.SCHEMA)
 @Where(clause = "IND_EXCLUIDO = 0")
 public class Lancamento extends Domain {
 	private static final long serialVersionUID = 1L;

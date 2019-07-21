@@ -33,7 +33,7 @@ import br.com.maruno.app.domain.Domain;
  * @NomeCompleto br.com.maruno.scaf.domain.vw.VWAtividadesMeses.java
  */
 @Entity
-@Table(name = "VW_ATIVIDADES_MESES", schema = Domain.SCHEMA)
+@Table(name = "VW_ATIVIDADES_MESES")//, schema = Domain.SCHEMA)
 public class VWAtividadesMeses implements Serializable {
 	private static final long serialVersionUID = 1L;
 
