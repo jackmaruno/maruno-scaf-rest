@@ -11,7 +11,7 @@
 	<groupId>br.com.maruno</groupId>
 	<artifactId>maruno-scaf-rest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>maruno-scaf-rest</name>
 
 	<properties>
@@ -55,11 +55,11 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.postgresql</groupId> -->
-<!-- 			<artifactId>postgresql</artifactId> -->
-<!-- 			<scope>runtime</scope> -->
-<!-- 		</dependency> -->
+ 		<dependency> 
+ 			<groupId>org.postgresql</groupId> 
+			<artifactId>postgresql</artifactId> 
+ 			<scope>runtime</scope> 
+ 		</dependency> 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
