@@ -45,6 +45,7 @@ public class ParametrosResource extends ResourceSupport{
 	CacheControl cacheControl = CacheControl.maxAge(5L, TimeUnit.MINUTES); 
 	
 
+	@SuppressWarnings("deprecation")
 	@GetMapping("/test")
 	@ResponseBody
 	public ResponseEntity<?> test() {
@@ -54,7 +55,7 @@ public class ParametrosResource extends ResourceSupport{
 		map.put("longo", 1L);
 		map.put("decimal", 1.12D);
 		map.put("data_string", new java.util.Date().toGMTString());
-		return ok(cacheControl, parametrosService.findGrupos());
+		return ok(cacheControl, map);
 	}
 	
 	@GetMapping("/grupos")
