@@ -64,6 +64,9 @@ public class UsuarioResource extends ResourceSupport {
 	public ResponseEntity<?> findUsuarios(@RequestParam(name = "nome", required = false)  String nome
 							            , @RequestParam(name = "login", required = false) String login
 							            , @RequestParam(name = "excluido", required = false) Boolean excluido) {
+		if(excluido == null) {
+			excluido = false;
+		}
 		return ok(usuarioService.findUsuarios(nome, login, excluido));
 	}
 
