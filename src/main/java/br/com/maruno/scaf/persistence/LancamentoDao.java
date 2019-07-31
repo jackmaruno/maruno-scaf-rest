@@ -11,13 +11,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.maruno.app.domain.Domain;
 import br.com.maruno.scaf.domain.Lancamento;
    
 /**
@@ -53,6 +54,25 @@ public interface LancamentoDao extends JpaRepository<Lancamento, Integer> {
 			                        , @Param("codCategoria")  Integer codCategoria
 			                        , @Param("descricao")     String  descricao );
 
+	@Query(" SELECT l FROM Lancamento l "
+		 + " JOIN l.categoria c"
+		 + " JOIN c.grupo g"
+		 + " WHERE l.codUsuario = :codUsuario"
+		 + " AND l.dataReferencia between :dataInicio and :dataFim "
+		 + " AND (:codLancamento = 0 OR l.codigo = :codLancamento) "
+		 + " AND (:codGrupo      = 0 OR g.codigo = :codGrupo) "
+		 + " AND (:codCategoria  = 0 OR c.codigo = :codCategoria) "
+		 + " AND (:descricao     = '' OR UPPER(l.descricao) like %:descricao%) "
+		 + " ORDER BY l.dataReferencia, c.nome ")
+	Page<Lancamento> findByParameters(@Param("codUsuario")    Integer codUsuario
+						            , @Param("dataInicio")    Date    dataInicio
+						            , @Param("dataFim")       Date    dataFim
+			                        , @Param("codLancamento") Integer codLancamento
+			                        , @Param("codGrupo")      Integer codGrupo
+			                        , @Param("codCategoria")  Integer codCategoria
+			                        , @Param("descricao")     String  descricao
+			                        , Pageable page );
+	
 	@Query(value = " SELECT * FROM TB_LANCAMENTO WHERE COD_LANCAMENTO = :codLancamento", nativeQuery = true )
 	Lancamento findByCodigo(@Param("codLancamento") Integer codLancamento);
 	

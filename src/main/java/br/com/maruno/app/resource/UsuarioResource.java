@@ -27,7 +27,6 @@ import br.com.maruno.app.domain.Usuario;
 import br.com.maruno.app.exceptions.OperacaoNaoRealizadaException;
 import br.com.maruno.app.service.TokenService;
 import br.com.maruno.app.service.UsuarioService;
-import br.com.maruno.app.support.PaginacaoUtils;
 import br.com.maruno.app.support.ResourceSupport;
 import br.com.maruno.app.support.Util;
 import br.com.maruno.app.vo.FotoVO;
@@ -52,61 +51,60 @@ public class UsuarioResource extends ResourceSupport {
 	
 	CacheControl cacheControl = CacheControl.maxAge(5L, TimeUnit.MINUTES);
 
-	@GetMapping("/logado")
 	@TokenAuthentication
+	@GetMapping("/logado")
 	@ResponseBody
 	public ResponseEntity<?> getUsuario() { 
 		return ok(cacheControl, tokenService.getUsuario());
 	}
 	
-	@GetMapping
 	@TokenAuthentication
+	@GetMapping
 	@ResponseBody
-	public ResponseEntity<?> findUsuarios(@RequestParam(name = "page", required = false)  Integer page
-							            , @RequestParam(name = "size", required = false)  Integer size
-							            , @RequestParam(name = "nome", required = false)  String nome
-							            , @RequestParam(name = "login", required = false) String login) {
-		return ok(usuarioService.findUsuarios(nome, login, PaginacaoUtils.getPage(page, size, true, "nome")));
+	public ResponseEntity<?> findUsuarios(@RequestParam(name = "nome", required = false)  String nome
+							            , @RequestParam(name = "login", required = false) String login
+							            , @RequestParam(name = "excluido", required = false) Boolean excluido) {
+		return ok(usuarioService.findUsuarios(nome, login, excluido));
 	}
 
-	@GetMapping("/{codigo}")
 	@TokenAuthentication
+	@GetMapping("/{codigo}")
 	@ResponseBody
 	public ResponseEntity<?> findUsuario(@PathVariable("codigo") Integer codigo) {
 		return ok(cacheControl, this.usuarioService.findByCodigo(codigo));
 	}
 
-	@GetMapping("/{codigo}/foto")
 	@TokenAuthentication
+	@GetMapping("/{codigo}/foto")
 	@ResponseBody
 	public ResponseEntity<?> findFotoUsuario(@PathVariable("codigo") Integer codigo) {
 		return ok(cacheControl, new FotoVO(usuarioService.findByCodigo(codigo).getFoto()));
 	}
 
-	@PutMapping("/{codigo}/foto")
 	@TokenAuthentication
+	@PutMapping("/{codigo}/foto")
 	public ResponseEntity<Void> saveFotoUsuario(@PathVariable("codigo") Integer codigo, @RequestBody FotoVO fotoVO) {
 		usuarioService.saveFotoUsuario(codigo, fotoVO);
 		return ok();
 	}
-	
-	
 
+	@TokenAuthentication
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> saveUsuario(@RequestBody Usuario usuario) {
 		return post(usuarioService.saveUsuario(null, usuario));
 	}
 
+	@TokenAuthentication
 	@PutMapping("/{codigo}")
 	@ResponseBody
 	public ResponseEntity<?> saveUsuario(@PathVariable("codigo") Integer codigo, @RequestBody Usuario usuario) {
 		return ok(usuarioService.saveUsuario(codigo, usuario));
 	}
 
+	@TokenAuthentication
 	@PutMapping("/{codUsuario}/status/{status}")
-	public ResponseEntity<Void> alteraStatusUsuario(@PathVariable("codUsuario") Integer codUsuario
-			                                      , @PathVariable("status") String status ) {
+	public ResponseEntity<Void> alteraStatusUsuario(@PathVariable("codUsuario") Integer codUsuario, @PathVariable("status") String status) {
 		if(Util.isEmpty(status)) {
 			throw new OperacaoNaoRealizadaException("Status é obrigatório");
 		}else if(status.toUpperCase().equals("ATIVAR")) {
@@ -120,7 +118,7 @@ public class UsuarioResource extends ResourceSupport {
 		return ok();
 	}
 	
-	
+	@TokenAuthentication
 	@DeleteMapping("/{codigo}")
 	public ResponseEntity<Void> removeUsuario(@PathVariable("codigo") Integer codigo) {
 		usuarioService.alterarStatus(codigo, false);

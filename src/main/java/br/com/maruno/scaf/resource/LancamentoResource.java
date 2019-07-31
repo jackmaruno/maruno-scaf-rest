@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.maruno.app.annotation.ApiRestController;
 import br.com.maruno.app.annotation.TokenAuthentication;
+import br.com.maruno.app.support.PaginacaoUtils;
 import br.com.maruno.app.support.ResourceSupport;
 import br.com.maruno.scaf.domain.Lancamento;
 import br.com.maruno.scaf.service.LancamentoService;
@@ -61,6 +62,23 @@ public class LancamentoResource extends ResourceSupport {
 		return ok(cacheControl, lancamentoService.findByParametros(codLancamento, codGrupo, codCategoria, dataInicio, dataFim, descricao));  
 	}
 
+	/************************************************************************************
+	 * FIND LANCAMENTOS PAGINADO
+	 ************************************************************************************/
+	@TokenAuthentication
+	@GetMapping("/lancamentos-paginado")
+	@ResponseBody
+	public ResponseEntity<?> findPage(
+			  @RequestParam(name = "page", required = false)  Integer page
+            , @RequestParam(name = "size", required = false)  Integer size
+			, @RequestParam(name = "codLancamento", required = false) Integer codLancamento
+            , @RequestParam(name = "codGrupo",      required = false) Integer codGrupo
+            , @RequestParam(name = "codCategoria",  required = false) Integer codCategoria
+            , @RequestParam(name = "dataInicio",    required = true)  String  dataInicio
+            , @RequestParam(name = "dataFim",       required = true)  String  dataFim
+            , @RequestParam(name = "descricao",     required = false) String  descricao) { 
+		return ok(cacheControl, lancamentoService.findByParametros(codLancamento, codGrupo, codCategoria, dataInicio, dataFim, descricao, PaginacaoUtils.getPage(page, size, true, "dataReferencia")));  
+	}
 	/************************************************************************************
 	 * FIND LANCAMENTO BY ID
 	 ************************************************************************************/

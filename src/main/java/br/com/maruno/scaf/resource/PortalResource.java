@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import br.com.maruno.app.annotation.ApiRestController;
+import br.com.maruno.app.domain.Usuario;
+import br.com.maruno.app.service.UsuarioService;
 import br.com.maruno.app.support.ResourceSupport;
 import br.com.maruno.scaf.domain.Contato;
 import br.com.maruno.scaf.service.ContatoService;
@@ -33,6 +35,9 @@ public class PortalResource extends ResourceSupport {
 	@Autowired
 	private ContatoService contatoService;
 	
+	@Autowired
+	private UsuarioService usuarioService;
+
 	/************************************************************************************
 	 * SAVE CONTATO
 	 ************************************************************************************/
@@ -41,5 +46,14 @@ public class PortalResource extends ResourceSupport {
 	public ResponseEntity<?> saveContato(@RequestBody Contato contato) {
 		contatoService.save(contato);
 		return post();
-	} 
+	}
+
+	/************************************************************************************
+	 * SAVE USUARIO
+	 ************************************************************************************/
+	@PostMapping("/usuarios")
+	@ResponseBody
+	public ResponseEntity<?> saveUsuario(@RequestBody Usuario usuario) {
+		return post(usuarioService.saveNovoUsuario(usuario));
+	}
 }

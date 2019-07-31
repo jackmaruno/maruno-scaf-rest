@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,18 +67,18 @@ public class UsuarioService {
 		return lista;
 	}
 	
-	public Page<Usuario> findUsuarios(String nome, String login, Pageable paginacao) {
-		Page<Usuario> lista = null;
+	public List<Usuario> findUsuarios(String nome, String login, Boolean excluido) {
+		List<Usuario> lista = null;
 		if (Util.isNotEmpty(nome) && Util.isNotEmpty(login)) {
-			lista = usuarioDao.findByNomeContainingIgnoreCaseAndLoginContainingIgnoreCaseAndExcluido(nome, login, false, paginacao);
+			lista = usuarioDao.findByNomeContainingIgnoreCaseAndLoginContainingIgnoreCaseAndExcluido(nome, login, excluido);
 		} else if (Util.isNotEmpty(nome) && Util.isEmpty(login)) {
-			lista = usuarioDao.findByNomeContainingIgnoreCaseAndExcluido(nome, false, paginacao);
+			lista = usuarioDao.findByNomeContainingIgnoreCaseAndExcluido(nome, excluido);
 		} else if (Util.isEmpty(nome)  && Util.isNotEmpty(login)) {
-			lista = usuarioDao.findByLoginContainingIgnoreCaseAndExcluido(login, false, paginacao);
+			lista = usuarioDao.findByLoginContainingIgnoreCaseAndExcluido(login, excluido);
 		} else {
-			lista = usuarioDao.findByExcluido(false, paginacao);
+			lista = usuarioDao.findByExcluido(excluido);
 		}
-		if ((lista == null) || (lista.getTotalPages() == 0)) {
+		if (Util.isEmpty(lista)) {
 			throw new RecursoNaoEncontradoException("Nenhum usuario foi localizado.");
 		}
 		for(Usuario u:lista) {
@@ -114,7 +112,13 @@ public class UsuarioService {
 		}
 	}
    
- 
+
+	private static final int PERFIL_USUARIO = 3;
+	
+	public Usuario saveNovoUsuario(Usuario usuario) {
+		usuario.setPerfil(new Perfil(PERFIL_USUARIO));
+		return saveOrUpdate(null, usuario);
+	}
 
 	public Usuario saveUsuario(Integer codUsuario, Usuario usuario) {
 		if (validaUsuario(codUsuario, usuario)) {
@@ -122,23 +126,21 @@ public class UsuarioService {
 			if (Util.isNotEmpty(codUsuario) ) {
 				usuarioBase = usuarioDao.findByCodigoAndExcluido(codUsuario, false);
 			}
-			return saveUsuario(usuarioBase, usuario);
+			return saveOrUpdate(usuarioBase, usuario);
 		}
 		return null;
 	}
  
-
-	private Usuario saveUsuario(Usuario usuarioBase, Usuario usuario) {
+	private Usuario saveOrUpdate(Usuario usuarioBase, Usuario usuario) {
 		if (usuarioBase != null) {
 			usuarioBase = setUsuario(usuarioBase, usuario);
 			usuarioBase.setDataAtualizacao(new Date());
-			usuarioDao.save(usuarioBase);
 		} else {
 			validarNovoUsuario(usuario.getLogin());
 			usuarioBase = setUsuario(usuarioBase, usuario);
 			usuarioBase.setDataCadastro(new Date());
-			usuarioDao.save(usuarioBase);
 		}
+		usuarioDao.save(usuarioBase);
 		return usuarioBase;
 	}
 
@@ -200,7 +202,6 @@ public class UsuarioService {
 			throw new DadoInconsistenteException("O login \""+usuario+"\" já está em uso!");
 		}
 	}
- 
  
 	public int alterarStatus(Integer codUsuario, Boolean excluido) {
 		findByCodigo(codUsuario);

@@ -8,6 +8,7 @@
 package br.com.maruno.app.persistence;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,6 +47,14 @@ public interface UsuarioDao extends JpaRepository<Usuario, Integer> {
 
 	Page<Usuario> findByExcluido(Boolean excluido, Pageable page);
 
+
+	List<Usuario> findByNomeContainingIgnoreCaseAndExcluido(String nome, Boolean excluido);
+
+	List<Usuario> findByLoginContainingIgnoreCaseAndExcluido(String login, Boolean excluido);
+	
+	List<Usuario> findByNomeContainingIgnoreCaseAndLoginContainingIgnoreCaseAndExcluido(String nome, String login, Boolean excluido);
+	
+	List<Usuario> findByExcluido(Boolean excluido);
 
 	@Query(value="SELECT CASE WHEN COUNT(codigo) > 0 THEN true ELSE false END"
 			   + "\n FROM Usuario o "

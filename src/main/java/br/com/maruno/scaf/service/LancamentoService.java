@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,6 +89,18 @@ public class LancamentoService extends ScafService{
 		
 		List<Lancamento> lista = lancamentoDao.findByParameters(tokenService.getCodUsuario(), d1, d2, tratarValor(codLancamento), tratarValor(codGrupo), tratarValor(codCategoria), tratarValor(descricao));
 		return lista;
+	} 
+
+	/************************************************************************************
+	 * FIND LANCAMENTOS PAGINADO
+	 ************************************************************************************/
+	public Page<Lancamento> findByParametros(Integer codLancamento, Integer codGrupo, Integer codCategoria, String dataInicio, String dataFim, String descricao, Pageable pagina){ 
+		Date d1 = DateUtils.convertStringDate(dataInicio);
+		Date d2 = DateUtils.convertStringDate(dataFim);
+		if(Util.isEmpty(d1) || Util.isEmpty(d2)){ 
+			throw new DadoInconsistenteException("O \"Período\" não foi informado");
+		} 
+		return lancamentoDao.findByParameters(tokenService.getCodUsuario(), d1, d2, tratarValor(codLancamento), tratarValor(codGrupo), tratarValor(codCategoria), tratarValor(descricao), pagina);
 	} 
 
 	/************************************************************************************
