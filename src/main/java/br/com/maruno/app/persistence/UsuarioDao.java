@@ -7,6 +7,8 @@
  */
 package br.com.maruno.app.persistence;
 
+import java.util.Date;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -64,4 +66,10 @@ public interface UsuarioDao extends JpaRepository<Usuario, Integer> {
 	@Transactional
 	@Query(value ="UPDATE Usuario SET senha = :senha WHERE UPPER(login) = UPPER(:login)")
 	int updateSenha(@Param("login") String login, @Param("senha") String senha);
+	
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE Usuario SET excluido = :excluido, dataAtualizacao = :dataAtualizacao WHERE codigo = :codUsuario ")
+	int updateStatus(@Param("codUsuario") Integer codUsuario, @Param("excluido") Boolean excluido, @Param("dataAtualizacao") Date dataAtualizacao);
+	
 }

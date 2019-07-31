@@ -105,10 +105,7 @@ public class UsuarioService {
 		return usuario;
 	}
 
-	public void saveFotoUsuario(Integer codigo, FotoVO fotoVO) {
-//		if (!AccessTokenAutenticadoService.isUsuarioLogado(codigo)) {
-//			throw new AccessoNegadoException("Somente o próprio usuário pode alterar sua foto.");
-//		}
+	public void saveFotoUsuario(Integer codigo, FotoVO fotoVO) { 
 		findByCodigo(codigo);
 		try {
 			usuarioDao.saveFotoUsuario(codigo, fotoVO.getFoto());
@@ -119,11 +116,13 @@ public class UsuarioService {
    
  
 
-	public Integer saveUsuarioSistema(Usuario usuario) {
-		if (validaUsuario(usuario)) {
-			Usuario usuarioBase = usuarioDao.findByLoginIgnoreCaseAndExcluido(usuario.getLogin(), false);
-			Usuario usuarioSalvo = saveUsuario(usuarioBase, usuario);
-			return usuarioSalvo.getCodigo();
+	public Usuario saveUsuario(Integer codUsuario, Usuario usuario) {
+		if (validaUsuario(codUsuario, usuario)) {
+			Usuario usuarioBase = null;
+			if (Util.isNotEmpty(codUsuario) ) {
+				usuarioBase = usuarioDao.findByCodigoAndExcluido(codUsuario, false);
+			}
+			return saveUsuario(usuarioBase, usuario);
 		}
 		return null;
 	}
@@ -135,7 +134,7 @@ public class UsuarioService {
 			usuarioBase.setDataAtualizacao(new Date());
 			usuarioDao.save(usuarioBase);
 		} else {
-			validateLoginExterno(usuario.getLogin());
+			validarNovoUsuario(usuario.getLogin());
 			usuarioBase = setUsuario(usuarioBase, usuario);
 			usuarioBase.setDataCadastro(new Date());
 			usuarioDao.save(usuarioBase);
@@ -153,11 +152,25 @@ public class UsuarioService {
 		}
 		usuarioBase.setNome(usuario.getNome());
 		usuarioBase.setEmail(usuario.getEmail());
+		usuarioBase.setPerfil(perfilDao.findByCodigo(usuario.getPerfil().getCodigo()));
 		return usuarioBase;
 	}
 
-	private boolean validaUsuario(Usuario usuario) {
+	private boolean validaUsuario(Integer codUsuario, Usuario usuario) {
 		boolean valido = true;
+		if (Util.isNotEmpty(codUsuario) ) {
+			if(Util.isEmpty(usuario.getCodigo()) || !usuario.getCodigo().equals(codUsuario)) {
+				valido = false;
+				throw new DadoInconsistenteException("O codigo do usuário não é válido.");
+			}
+			findByCodigo(codUsuario);
+		}else {
+			if(Util.isNotEmpty(usuario.getCodigo()) ) {
+				valido = false;
+				throw new DadoInconsistenteException("O codigo do usuário não é válido.");
+			}
+		}
+		
 		if (Util.isEmpty(usuario.getLogin()) 
 				|| Util.isEmpty(usuario.getNome())
 					|| Util.isEmpty(usuario.getEmail())) {
@@ -178,12 +191,24 @@ public class UsuarioService {
 		return valido;
 	}
 
-	private void validateLoginExterno(String login) {
+	private void validarNovoUsuario(String login) {
 		if (!EmailValidator.validate(login)) {
 			throw new DadoInconsistenteException("O login de um usuário deve ser um e-mail válido!");
+		}
+		Usuario usuario = usuarioDao.findByLoginIgnoreCase(login);
+		if (usuario != null) {
+			throw new DadoInconsistenteException("O login \""+usuario+"\" já está em uso!");
 		}
 	}
  
  
+	public int alterarStatus(Integer codUsuario, Boolean excluido) {
+		findByCodigo(codUsuario);
+		try {
+			return usuarioDao.updateStatus(codUsuario, excluido, new Date());
+		} catch (Exception e) {
+			throw new OperacaoNaoRealizadaException(e.toString());
+		}
+	}
 
 }
