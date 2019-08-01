@@ -48,7 +48,7 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 		         + " AND l.IND_EXCLUIDO = 0"
 		         + " AND l.COD_USUARIO = :codUsuario"
 				 + " AND (l.COD_TIPO_PAGAMENTO = 2 Or l.COD_CATEGORIA = 63)"
-				 + " AND (:anoMes = '' OR DATE_FORMAT(p.DAT_PARCELA,''%Y%m') = :anoMes) "
+				 + " AND (:anoMes = '' OR DATE_FORMAT(p.DAT_PARCELA,'%Y%m') = :anoMes) "
 //				 + " AND (:anoMes = '' OR TO_CHAR(p.DAT_PARCELA,'YYYYMM') = :anoMes) "
 				 + " ORDER BY p.DAT_PARCELA, l.DAT_LANCAMENTO", nativeQuery = true)	
 	List<Parcela> findParcelasPendentes(@Param("codUsuario") Integer codUsuario, @Param("anoMes") String anoMes);
@@ -60,7 +60,7 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 	        + " AND l.IND_EXCLUIDO = 0"
 			+ " AND l.COD_USUARIO = :codUsuario"
 			+ " AND (l.COD_TIPO_PAGAMENTO = 2 Or l.COD_CATEGORIA = 63)"
-			+ " AND (:anoMes = '' OR DATE_FORMAT(p.DAT_PARCELA,''%Y%m') = :anoMes) "
+			+ " AND (:anoMes = '' OR DATE_FORMAT(p.DAT_PARCELA,'%Y%m') = :anoMes) "
 //			+ " AND (:anoMes = '' OR TO_CHAR(p.DAT_PARCELA,'YYYYMM') = :anoMes) "
 			+ " ORDER BY p.DAT_PARCELA, l.DAT_LANCAMENTO", nativeQuery = true)	
 	List<Parcela> findParcelasPagas(@Param("codUsuario") Integer codUsuario, @Param("anoMes") String anoMes);
