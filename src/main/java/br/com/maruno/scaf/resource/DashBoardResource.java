@@ -7,10 +7,7 @@
  */
 package br.com.maruno.scaf.resource;
 
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,19 +33,17 @@ public class DashBoardResource extends ResourceSupport {
 	@Autowired
 	private DashBoardService dashBoardService;
 	
-	CacheControl cacheControl = CacheControl.maxAge(5L, TimeUnit.MINUTES);
-
 	@TokenAuthentication
 	@GetMapping 
 	@ResponseBody
 	public ResponseEntity<?> findDashBoard() { 
-		return ok(cacheControl, dashBoardService.findDashBoard());
+		return ok(dashBoardService.findDashBoard());
 	}  
 
 	@TokenAuthentication
 	@GetMapping("/lancamentos")
 	@ResponseBody
 	public ResponseEntity<?> findRelacaoLancamentos(@RequestParam(name = "codTipo", required = true) Integer codTipo) { 
-		return ok(cacheControl, dashBoardService.findRelacaoLancamentos(codTipo));
+		return ok(dashBoardService.findRelacaoLancamentos(codTipo));
 	} 
 }
