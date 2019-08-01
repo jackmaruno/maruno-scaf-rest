@@ -48,7 +48,8 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 		         + " AND l.IND_EXCLUIDO = 0"
 		         + " AND l.COD_USUARIO = :codUsuario"
 				 + " AND (l.COD_TIPO_PAGAMENTO = 2 Or l.COD_CATEGORIA = 63)"
-				 + " AND (:anoMes = '' OR TO_CHAR(p.DAT_PARCELA,'YYYYMM') = :anoMes) "
+				 + " AND (:anoMes = '' OR DATE_FORMAT(p.DAT_PARCELA,''%Y%m') = :anoMes) "
+//				 + " AND (:anoMes = '' OR TO_CHAR(p.DAT_PARCELA,'YYYYMM') = :anoMes) "
 				 + " ORDER BY p.DAT_PARCELA, l.DAT_LANCAMENTO", nativeQuery = true)	
 	List<Parcela> findParcelasPendentes(@Param("codUsuario") Integer codUsuario, @Param("anoMes") String anoMes);
 	
@@ -59,11 +60,13 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 	        + " AND l.IND_EXCLUIDO = 0"
 			+ " AND l.COD_USUARIO = :codUsuario"
 			+ " AND (l.COD_TIPO_PAGAMENTO = 2 Or l.COD_CATEGORIA = 63)"
-			+ " AND (:anoMes = '' OR TO_CHAR(p.DAT_PARCELA,'YYYYMM') = :anoMes) "
+			+ " AND (:anoMes = '' OR DATE_FORMAT(p.DAT_PARCELA,''%Y%m') = :anoMes) "
+//			+ " AND (:anoMes = '' OR TO_CHAR(p.DAT_PARCELA,'YYYYMM') = :anoMes) "
 			+ " ORDER BY p.DAT_PARCELA, l.DAT_LANCAMENTO", nativeQuery = true)	
 	List<Parcela> findParcelasPagas(@Param("codUsuario") Integer codUsuario, @Param("anoMes") String anoMes);
 	
-	@Query(value = " SELECT DISTINCT TO_CHAR(p.DAT_PARCELA,'YYYYMM') AS ANO_MES, TO_CHAR(p.DAT_PARCELA,'MM/YYYY') AS DATA "
+	@Query(value = " SELECT DISTINCT DATE_FORMAT(p.DAT_PARCELA,'%Y%m') AS ANO_MES, DATE_FORMAT(p.DAT_PARCELA,'%m/%Y') AS DATA "
+//	@Query(value = " SELECT DISTINCT TO_CHAR(p.DAT_PARCELA,'YYYYMM') AS ANO_MES, TO_CHAR(p.DAT_PARCELA,'MM/YYYY') AS DATA "
 			+ " FROM TB_PARCELA p"
 			+ " INNER JOIN TB_LANCAMENTO l ON l.COD_LANCAMENTO = p.COD_LANCAMENTO"
 			+ " LEFT JOIN TB_LANCAMENTO l2 ON l2.COD_PARCELA = p.COD_PARCELA"
@@ -79,7 +82,8 @@ public interface ParcelaDao extends JpaRepository<Parcela, Integer> {
 	        + " WHERE l.IND_EXCLUIDO                      = 0"
 	        + " AND l.COD_USUARIO                         = :codUsuario"
 			+ " AND l.COD_CARTAO_CREDITO                  = :codCartaoCredito"
-			+ " AND TO_CHAR(p.DAT_PARCELA,'DD/MM/YYYY')   = :data"
+			+ " AND DATE_FORMAT(p.DAT_PARCELA,'%d/%m/%Y')   = :data"
+//			+ " AND TO_CHAR(p.DAT_PARCELA,'DD/MM/YYYY')   = :data"
 			+ " ORDER BY p.DAT_PARCELA, l.DAT_LANCAMENTO", nativeQuery = true)	
 	List<Parcela> findByParameters(@Param("codUsuario") Integer codUsuario, @Param("codCartaoCredito") Integer codCartaoCredito, @Param("data") String data);
 	

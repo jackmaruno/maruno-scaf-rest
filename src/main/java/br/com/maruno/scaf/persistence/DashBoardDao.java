@@ -13,7 +13,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import br.com.maruno.app.domain.Domain;
 import br.com.maruno.scaf.domain.Lancamento;
    
 /**
@@ -25,12 +24,12 @@ import br.com.maruno.scaf.domain.Lancamento;
  * @NomeCompleto br.com.maruno.scaf.persistence.DashBoardDao.java
  */
 public interface DashBoardDao extends JpaRepository<Lancamento, Integer> { 
- 
+
     @Query(nativeQuery = true, 
     value = " select COD_LANCAMENTO, "+
     		"        DES_CATEGORIA, "+
     		"        VAL_LANCAMENTO, "+
-    		"        TO_CHAR(DAT_LANCAMENTO,'DD/MM/YYYY') AS DAT_LANCAMENTO, "+
+    		"        DATE_FORMAT(DAT_LANCAMENTO,'%d/%m/%Y') AS DAT_LANCAMENTO, "+
     		"        NUM_DIAS, "+
     		"        NUM_HORAS, "+
     		"        NUM_MINUTOS "+
@@ -62,10 +61,10 @@ public interface DashBoardDao extends JpaRepository<Lancamento, Integer> {
 			"\n" + 
 			"\n WHERE LANCAMENTO.COD_USUARIO = :codUsuario \n" + 
 			"\n AND LANCAMENTO.COD_CARTAO_CREDITO IS NULL\n" + 
-			"\n AND ( TO_CHAR(NOW(),'YYYYMM') = TO_CHAR(PARCELA.DAT_PARCELA,'YYYYMM')\n" + 
-			"\n		or ((PARCELA.DAT_PARCELA < concat(TO_CHAR(NOW(),'YYYY-MM'),'-01')) and LANCAMENTO_PAGAMENTO.DAT_REFERENCIA IS NULL)\n" + 
+			"\n AND ( DATE_FORMAT(NOW(),'%Y%m') = DATE_FORMAT(PARCELA.DAT_PARCELA,'%Y%m')\n" + 
+			"\n		or ((PARCELA.DAT_PARCELA < STR_TO_DATE(CONCAT(DATE_FORMAT(NOW(),'%Y-%m'),'-01'), '%Y-%m-%d') ) and LANCAMENTO_PAGAMENTO.DAT_REFERENCIA IS NULL)\n" + 
 			"\n    )", nativeQuery = true)	
-	List<Object[]> findParcelas(@Param("codUsuario") Integer codUsuario);
+	List<Object[]> findParcelas(@Param("codUsuario") Integer codUsuario); 
 	
 	@Query(value = "" + 
 	        " select FATURAS.DAT_FATURA \n" + 
@@ -87,9 +86,9 @@ public interface DashBoardDao extends JpaRepository<Lancamento, Integer> {
 			" WHERE FATURAS.COD_USUARIO = :codUsuario  \n" + 
 			" AND FATURAS.DAT_REFERENCIA IS NULL \n" + 
 			" AND (\n" + 
-			"  TO_CHAR(NOW(),'YYYYMM') = TO_CHAR(FATURAS.DAT_FATURA,'YYYYMM')\n" + 
+			"  DATE_FORMAT(NOW(),'%Y%m') = DATE_FORMAT(FATURAS.DAT_FATURA,'%Y%m')\n" + 
 			"  or (\n" + 
-			"     FATURAS.DAT_FATURA < concat(TO_CHAR(NOW(),'YYYY-MM'),'-01') and FATURAS.DAT_REFERENCIA IS NULL\n" + 
+			"     FATURAS.DAT_FATURA < STR_TO_DATE(CONCAT(DATE_FORMAT(NOW(),'%Y-%m'),'-01'), '%Y-%m-%d') and FATURAS.DAT_REFERENCIA IS NULL\n" + 
 			"  )\n" + 
 			") \n" + 
 			" AND FATURAS.QTD_PARCELAS_PENDENTES > 0\n" + 
