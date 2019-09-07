@@ -6,14 +6,16 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import br.com.maruno.app.support.DateUtils;
+
  
 public class DataFaturaVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Date dataReferencia;
+	private String dataReferencia;
 
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	private Date dataFatura;
+	private String dataFatura;
 	
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private BigDecimal valor;
@@ -24,28 +26,28 @@ public class DataFaturaVO implements Serializable {
 
 	public DataFaturaVO(Object[] dados) {
 		super();
-		this.dataReferencia = (Date) dados[0]   ;
-		this.dataFatura = (Date) dados[1];
+		this.dataReferencia = DateUtils.convertDateToString((Date) dados[0])   ;
+		this.dataFatura = DateUtils.convertDateToString((Date) dados[1]);
 		this.valor = (BigDecimal) dados[2];
 	}
 
 
-	public Date getDataReferencia() {
+	public String getDataReferencia() {
 		return dataReferencia;
 	}
 
 
-	public void setDataReferencia(Date dataReferencia) {
+	public void setDataReferencia(String dataReferencia) {
 		this.dataReferencia = dataReferencia;
 	}
 
 
-	public Date getDataFatura() {
+	public String getDataFatura() {
 		return dataFatura;
 	}
 
 
-	public void setDataFatura(Date dataFatura) {
+	public void setDataFatura(String dataFatura) {
 		this.dataFatura = dataFatura;
 	}
 
