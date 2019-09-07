@@ -44,6 +44,6 @@ public interface AccessTokenDao extends JpaRepository<AccessToken, String> {
 		, nativeQuery = true)
 	AccessToken findAccessToken(@Param("access_token") String access_token, 
 			                    @Param("urlRecurso")   String urlRecurso, 
-			                    @Param("metodo")       String metodo);
+			                    @Param("metodo")       String metodo); 
  
 }

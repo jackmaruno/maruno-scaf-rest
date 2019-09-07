@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 
 import br.com.maruno.app.domain.AccessToken;
 import br.com.maruno.app.domain.Perfil;
+import br.com.maruno.app.domain.Recurso;
 import br.com.maruno.app.domain.Usuario;
 import br.com.maruno.app.exceptions.AccessoNegadoException;
 import br.com.maruno.app.exceptions.DadoInconsistenteException;
 import br.com.maruno.app.persistence.AccessTokenDao;
+import br.com.maruno.app.persistence.RecursoDao;
 import br.com.maruno.app.support.Util; 
   
 /**
@@ -34,6 +36,9 @@ public class TokenService {
 	
 	@Autowired
 	private AccessTokenDao accessTokenDao;
+	
+	@Autowired
+	private RecursoDao recursoDao;
 
 	public AccessToken findAccessToken(String accessToken) {
 		return accessTokenDao.findAccessToken(accessToken); 
@@ -47,7 +52,14 @@ public class TokenService {
 		if (Util.isEmpty(accessToken)) {
 			throw new DadoInconsistenteException("O accessToken não foi informado.");
 		} 
-		token = accessTokenDao.findAccessToken(accessToken, urlRecurso.toUpperCase(), metodo.toUpperCase());
+		
+		Recurso recurso = recursoDao.findRecurso(urlRecurso.toUpperCase());
+		
+		if(recurso != null && !recurso.isExcluido()) { 
+			token = accessTokenDao.findAccessToken(accessToken, urlRecurso.toUpperCase(), metodo.toUpperCase());
+		}else {
+			token = accessTokenDao.findAccessToken(accessToken);
+		}
 		if (token == null) {
 			throw new AccessoNegadoException("O token informado não possui acesso ao recurso solicitado.");
 		}  

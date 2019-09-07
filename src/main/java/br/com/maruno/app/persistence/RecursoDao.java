@@ -8,6 +8,8 @@
 package br.com.maruno.app.persistence;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import br.com.maruno.app.domain.Recurso;
 
@@ -22,5 +24,6 @@ import br.com.maruno.app.domain.Recurso;
  */
 public interface RecursoDao extends JpaRepository<Recurso, Integer> {
 	 
- 
+	@Query("SELECT recurso FROM Recurso recurso WHERE UPPER(recurso.url) = :urlRecurso")
+	Recurso findRecurso( @Param("urlRecurso") String urlRecurso); 
 }
