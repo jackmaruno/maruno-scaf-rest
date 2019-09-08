@@ -56,13 +56,17 @@ public class AccessTokenService {
 	private static final String USER_NAME = "username";
 	private static final String PASSWORD = "password"; 
 	private static final String BEARER = "Bearer";
+//	private static final long DIAS_15 = 1296000l;
+	private static final long DIAS_15 = 1296000000l;
 	
 	public AccessToken getAccessToken(HttpServletRequest request) throws Exception {
-		validar(request); 
+		validar(request);
 		AccessToken token = new AccessToken();
 		token.setAccess_token(getAccessToken(request.getParameter(USER_NAME)));
 		token.setToken_type(BEARER); 
 		token.setDataCadastro(new Date());
+		token.setExpires_in(DIAS_15);
+		token.setValido(true);
 		token.setUsuario(usuarioDao.findByLogin(request.getParameter(USER_NAME)));
 		UserAgent userAgente = UserAgent.parseUserAgentString(request.getHeader(USER_AGENT));
 		

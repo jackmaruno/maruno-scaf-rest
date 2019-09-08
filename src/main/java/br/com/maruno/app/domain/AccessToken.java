@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -64,6 +66,19 @@ public class AccessToken  extends Domain {
 	@JsonIgnore
 	@Column(name = "DAT_CADASTRO")
 	private Date dataCadastro;  
+
+	@JsonIgnore
+	@Column(name = "DAT_ATUALIZACAO")
+	private Date dataAtualizacao;  
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@Column(name = "NUM_TEMPO_VALIDADE")
+	private Long expires_in; 
+	
+	@JsonIgnore
+	@Type(type = "org.hibernate.type.NumericBooleanType")
+	@Column(name = "IND_VALIDO")
+	private boolean valido = true;  
 	
 	@ManyToOne
 	@JoinColumn(name = "COD_USUARIO")
@@ -142,6 +157,30 @@ public class AccessToken  extends Domain {
 		this.token_type = token_type;
 	}
 
+	public boolean isValido() {
+		return valido;
+	}
+
+	public void setValido(boolean valido) {
+		this.valido = valido;
+	}
+
+	public Long getExpires_in() {
+		return expires_in;
+	}
+
+	public void setExpires_in(Long expires_in) {
+		this.expires_in = expires_in;
+	}
+
+	public Date getDataAtualizacao() {
+		return dataAtualizacao;
+	}
+
+	public void setDataAtualizacao(Date dataAtualizacao) {
+		this.dataAtualizacao = dataAtualizacao;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -161,6 +200,12 @@ public class AccessToken  extends Domain {
 		builder.append(ip);
 		builder.append(", dataCadastro:");
 		builder.append(dataCadastro);
+		builder.append(", dataAtualizacao:");
+		builder.append(dataAtualizacao);
+		builder.append(", valido:");
+		builder.append(valido);
+		builder.append(", expires_in:");
+		builder.append(expires_in);
 		builder.append(", usuario:");
 		builder.append(usuario);
 		builder.append("}");

@@ -7,6 +7,8 @@
  */
 package br.com.maruno.app.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,10 @@ import br.com.maruno.app.domain.Recurso;
 import br.com.maruno.app.domain.Usuario;
 import br.com.maruno.app.exceptions.AccessoNegadoException;
 import br.com.maruno.app.exceptions.DadoInconsistenteException;
+import br.com.maruno.app.exceptions.UsuarioNaoAutorizadoException;
 import br.com.maruno.app.persistence.AccessTokenDao;
 import br.com.maruno.app.persistence.RecursoDao;
+import br.com.maruno.app.support.DateUtils;
 import br.com.maruno.app.support.Util; 
   
 /**
@@ -44,7 +48,7 @@ public class TokenService {
 		return accessTokenDao.findAccessToken(accessToken); 
 	}
 	
-	public AccessToken findAccessToken(String accessToken, String urlRecurso, String metodo) {
+	public AccessToken findAccessToken(String accessToken, String urlRecurso, String metodo) throws Exception {
 		token = null;
 		if (Util.isEmpty(urlRecurso)) {
 			throw new DadoInconsistenteException("A URL do recurso não foi informada.");
@@ -62,7 +66,23 @@ public class TokenService {
 		}
 		if (token == null) {
 			throw new AccessoNegadoException("O token informado não possui acesso ao recurso solicitado.");
-		}  
+		}
+
+		if(token.isValido() && Util.isNotEmpty(token.getExpires_in())){
+			Date dataInicio = token.getDataAtualizacao() == null ? token.getDataCadastro() : token.getDataAtualizacao();
+			
+			if((dataInicio.getTime() - new Date().getTime()) >= token.getExpires_in()) {
+				token.setValido(false);
+			}else {
+				token.setDataAtualizacao(new Date());
+			}
+			accessTokenDao.save(token);
+		}
+		
+		
+		if(!token.isValido()){
+			throw new UsuarioNaoAutorizadoException("Sessão expirada.");
+		}
 		System.out.println("TokenService.findAccessToken -> "+token); 
 		return token;
 	}

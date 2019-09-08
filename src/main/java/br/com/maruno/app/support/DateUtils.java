@@ -110,6 +110,10 @@ public class DateUtils {
 	public static final long N_24 = 24l;
 	public static final long N_60 = 60l;
 	public static final long N_1000 = 1000l;
+	
+	public static long getDiferencaSegundos(Date data1, Date data2) { 
+		return segundos(data1.getTime() - data2.getTime());
+	}
 
 	public static long getDiferencaMinutos(String data, String hora1, String hora2) { 
 		Calendar dataInicial = getCalendar(convertStringDate(data+" "+hora1, "dd/MM/yyyy HH:mm"));
