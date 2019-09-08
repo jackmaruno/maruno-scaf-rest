@@ -13,6 +13,7 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import br.com.maruno.app.exceptions.AccesTokenException;
@@ -40,6 +41,7 @@ import br.com.maruno.app.vo.DetalhesErroVO;
  * @Nome ResourceExceptionHandler.java
  * @NomeCompleto br.com.maruno.app.handler.ResourceExceptionHandler.java
  */
+@ControllerAdvice
 public class ResourceExceptionHandler {
 
 	  public static final int MOVED_TEMPORARILY = 3202;
