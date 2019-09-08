@@ -18,10 +18,9 @@ import br.com.maruno.app.domain.Recurso;
 import br.com.maruno.app.domain.Usuario;
 import br.com.maruno.app.exceptions.AccessoNegadoException;
 import br.com.maruno.app.exceptions.DadoInconsistenteException;
-import br.com.maruno.app.exceptions.UsuarioNaoAutorizadoException;
+import br.com.maruno.app.exceptions.SessaoExpiradaException;
 import br.com.maruno.app.persistence.AccessTokenDao;
 import br.com.maruno.app.persistence.RecursoDao;
-import br.com.maruno.app.support.DateUtils;
 import br.com.maruno.app.support.Util; 
   
 /**
@@ -86,7 +85,7 @@ public class TokenService {
 		
 		
 		if(!token.isValido()){
-			throw new UsuarioNaoAutorizadoException("Sessão expirada.");
+			throw new SessaoExpiradaException("Sessão expirada.");
 		}
 		System.out.println("TokenService.findAccessToken -> "+token); 
 		return token;
