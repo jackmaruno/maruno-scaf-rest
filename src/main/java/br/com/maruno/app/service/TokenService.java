@@ -71,6 +71,11 @@ public class TokenService {
 		if(token.isValido() && Util.isNotEmpty(token.getExpires_in())){
 			Date dataInicio = token.getDataAtualizacao() == null ? token.getDataCadastro() : token.getDataAtualizacao();
 			
+			System.out.println("dataInicio.getTime()  -> "+dataInicio.getTime()+"\n");
+			System.out.println("new Date().getTime()  -> "+new Date().getTime()+"\n");
+			System.out.println("token.getExpires_in() -> "+ token.getExpires_in()+"\n\n");
+			System.out.println("dataInicio.getTime() - new Date().getTime() -> "+(dataInicio.getTime() - new Date().getTime())+"\n");
+			
 			if((dataInicio.getTime() - new Date().getTime()) >= token.getExpires_in()) {
 				token.setValido(false);
 			}else {
