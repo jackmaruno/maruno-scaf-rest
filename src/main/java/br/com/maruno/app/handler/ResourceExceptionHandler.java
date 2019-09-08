@@ -57,7 +57,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleAccessoNegadoException(AccessoNegadoException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(FORBIDDEN);
-		erro.setTitulo("acesso_nao_permitido");
+		erro.setTitulo("Accesso Negado");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(FORBIDDEN).body(erro);
 	}
@@ -66,7 +66,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleAccesTokenException(AccesTokenException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(UNAUTHORIZED);
-		erro.setTitulo("invalid_token");
+		erro.setTitulo("Token Inválido");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(UNAUTHORIZED).body(erro);
 	}
@@ -75,7 +75,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleClienteInvalidoException(ClienteInvalidoException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(UNAUTHORIZED);
-		erro.setTitulo("invalid_client");
+		erro.setTitulo("Client Inválido");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(UNAUTHORIZED).body(erro);
 	}
@@ -93,7 +93,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleGrantTypeException(GrantTypeException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(BAD_REQUEST);
-		erro.setTitulo("invalid_grant");
+		erro.setTitulo("Grant Inválido");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(BAD_REQUEST).body(erro);
 	}
@@ -102,7 +102,7 @@ public class ResourceExceptionHandler {
 	public static ResponseEntity<DetalhesErroVO> handleMetodoException(MetodoException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(METHOD_NOT_ALLOWED);
-		erro.setTitulo("metodo_nao_permitido");
+		erro.setTitulo("Método não permitido");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(METHOD_NOT_ALLOWED).body(erro);
 	}
@@ -129,7 +129,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleRefreshTokenInvalidoException(RefreshTokenInvalidoException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(UNAUTHORIZED);
-		erro.setTitulo("invalid_Refresh_token");
+		erro.setTitulo("Refresh Token Inválido");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(UNAUTHORIZED).body(erro);
 	}
@@ -147,7 +147,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleTrocaSenhaException(TrocaSenhaException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(MOVED_TEMPORARILY);
-		erro.setTitulo("Alteração de Senha Obrigatória.");
+		erro.setTitulo("Alteração de Senha Obrigatória");
 		erro.setDetalhe("O usuário deve redefinir sua senha!");
 		erro.setUrlAlteracaoSenha(e.getMessage());
 		return ResponseEntity.status(MOVED_TEMPORARILY).body(erro);
@@ -157,7 +157,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleUsuarioInvalidoException(UsuarioInvalidoException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(BAD_REQUEST);
-		erro.setTitulo("invalid_grant");
+		erro.setTitulo("Usuário Inválido");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(BAD_REQUEST).body(erro);
 	}
@@ -166,7 +166,7 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<DetalhesErroVO> handleUsuarioNaoAutorizadoException(UsuarioNaoAutorizadoException e, HttpServletRequest request) {
 		DetalhesErroVO erro = new DetalhesErroVO();
 		erro.setStatus(UNAUTHORIZED);
-		erro.setTitulo("unauthorized_client");
+		erro.setTitulo("Usuário não autorizado");
 		erro.setDetalhe(e.getMessage());
 		return ResponseEntity.status(UNAUTHORIZED).body(erro);
 	}

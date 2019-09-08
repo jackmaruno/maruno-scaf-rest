@@ -16,7 +16,7 @@ package br.com.maruno.app.exceptions;
  * @Nome UsuarioNaoAutorizadoException.java
  * @NomeCompleto br.com.maruno.app.exceptions.UsuarioNaoAutorizadoException.java
  */
-public class SessaoExpiradaException extends Exception {
+public class SessaoExpiradaException extends RuntimeException {
 	private static final long serialVersionUID = 1l;
 
 	/**
